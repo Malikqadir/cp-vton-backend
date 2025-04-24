@@ -1,6 +1,7 @@
+import os
+import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse
-import os
 from tryon import generate_virtual_tryon
 
 app = FastAPI()
@@ -19,3 +20,7 @@ async def try_on(person: UploadFile = File(...), cloth: UploadFile = File(...)):
 
     result_path = generate_virtual_tryon(person_path, cloth_path, output_path)
     return FileResponse(result_path)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
